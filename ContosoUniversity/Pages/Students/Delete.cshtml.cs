@@ -68,9 +68,9 @@ namespace ContosoUniversity.Pages.Students
             }
             catch (DbUpdateException ex)
             {
-                // logs the error 
+                Console.WriteLine(ex.Message);
                 return RedirectToAction("./Delete",
-                    new { ex, saveChangesError = true });
+                    new { id, saveChangesError = true });
             }
 
         }
