@@ -20,20 +20,28 @@ namespace ContosoUniversity.Pages.Students
 
         [BindProperty]
         public Student Student { get; set; }
+        public string ErrorMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Student = await _context.Student.FirstOrDefaultAsync(m => m.ID == id);
+            Student = await _context.Student.AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
 
             if (Student == null)
             {
                 return NotFound();
             }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ErrorMessage = "Delete failed. Try again.";
+            }
+
             return Page();
         }
 
@@ -44,15 +52,27 @@ namespace ContosoUniversity.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Student.FindAsync(id);
+            var student = await _context.Student.AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
 
-            if (Student != null)
+            if (student == null)
             {
-                _context.Student.Remove(Student);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
 
-            return RedirectToPage("./Index");
+            try
+            {
+                _context.Student.Remove(student);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+            catch (DbUpdateException ex)
+            {
+                // logs the error 
+                return RedirectToAction("./Delete",
+                    new { id, saveChangesError = true });
+            }
+
         }
     }
 }
