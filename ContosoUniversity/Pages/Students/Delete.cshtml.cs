@@ -70,7 +70,7 @@ namespace ContosoUniversity.Pages.Students
             {
                 // logs the error 
                 return RedirectToAction("./Delete",
-                    new { id, saveChangesError = true });
+                    new { ex, saveChangesError = true });
             }
 
         }
