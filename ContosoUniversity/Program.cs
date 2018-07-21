@@ -30,7 +30,7 @@ namespace ContosoUniversity
                     var context = services.GetRequiredService<SchoolContext>();
                     // use our brand new database seeder; moved the method call below to DBInitializer
                     //context.Database.EnsureCreated();
-                    DBInitializer.Initialize(context);
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.Models
 {
-    public class Student
+    public class Instructor
     {
         public int ID { get; set; }
 
         [Required]
-        [StringLength(50)]
         [Display(Name = "Last Name")]
+        [StringLength(50)]
         public string LastName { get; set; }
 
-        [StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
-        [Column("FirstName")]
         [Required]
         [Display(Name = "First Name")]
+        [StringLength(50)]
         public string FirstName { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Display(Name = "Enrollment Date")]
-        public DateTime EnrollmentDate { get; set; }
+        [Display(Name = "Hire Date")]
+        public DateTime HireDate { get; set; }
 
         [Display(Name = "Full Name")]
         public string FullName
@@ -34,6 +34,7 @@ namespace ContosoUniversity.Models
             }
         }
 
-        public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<CourseAssignment> CourseAssignments { get; set; }
+        public OfficeAssignment OfficeAssignment { get; set; }
     }
 }
